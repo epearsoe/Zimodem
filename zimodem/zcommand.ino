@@ -798,6 +798,8 @@ ZResult ZCommand::doBaudCommand(int vval, uint8_t *vbuf, int vlen)
       return ZERROR;
     *commaLoc=0;
     int baudChk=atoi((char *)vbuf);
+    //if((baudChk!=300)&&(baudChk!=1200)&&(baudChk!=2400)&&(baudChk!=4800)&&(baudChk!=9600)&&(baudChk!=19200))
+    //  return ZERROR;
     if((baudChk<128)||(baudChk>115200))
       return ZERROR;
     if((conStr[0]<'5')||(conStr[0]>'8'))
@@ -849,6 +851,8 @@ ZResult ZCommand::doBaudCommand(int vval, uint8_t *vbuf, int vlen)
   }
   else
   {
+    if((vval!=300)&&(vval!=1200)&&(vval!=2400)&&(vval!=4800)&&(vval!=9600)&&(vval!=19200))
+      return ZERROR;
     baudRate=vval;
   }
   hwSerialFlush();
@@ -1203,10 +1207,10 @@ ZResult ZCommand::doUpdateFirmware(int vval, uint8_t *vbuf, int vlen, bool isNum
   uint8_t buf[255];
   int bufSize = 254;
 #ifdef ZIMODEM_ESP32
-  if((!doWebGetBytes("www.zimmers.net", 80, "/otherprojs/guru-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
+  //if((!doWebGetBytes("www.zimmers.net", 80, "/otherprojs/guru-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
     return ZERROR;
 #else
-  if((!doWebGetBytes("www.zimmers.net", 80, "/otherprojs/c64net-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
+  //if((!doWebGetBytes("www.zimmers.net", 80, "/otherprojs/c64net-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
     return ZERROR;
 #endif
 
@@ -3003,6 +3007,8 @@ void ZCommand::showInitMessage()
   //serial.prints(" (");
   //serial.prints(compile_date);
   //serial.prints(")");
+  serial.prints(EOLN);
+  serial.prints("Coleco ADAM WiFi");
   serial.prints(commandMode.EOLN);
   char s[100];
 #ifdef ZIMODEM_ESP32
@@ -3592,4 +3598,3 @@ void ZCommand::loop()
   }
   checkBaudChange();
 }
-
