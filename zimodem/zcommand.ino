@@ -1211,6 +1211,7 @@ ZResult ZCommand::doUpdateFirmware(int vval, uint8_t *vbuf, int vlen, bool isNum
     return ZERROR;
 #else
   //if((!doWebGetBytes("www.zimmers.net", 80, "/otherprojs/c64net-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
+  if((!doWebGetBytes("epearson.diroccovision.com", 80, "/mibwifi/mibwifi-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
     return ZERROR;
 #endif
 
@@ -1258,10 +1259,10 @@ ZResult ZCommand::doUpdateFirmware(int vval, uint8_t *vbuf, int vlen, bool isNum
 #ifdef ZIMODEM_ESP32
   sprintf(firmwareName,"/otherprojs/guru-firmware-%s.bin",buf);
 #else
-  sprintf(firmwareName,"/otherprojs/c64net-firmware-%s.bin",buf);
+  sprintf(firmwareName,"/mibwifi/mibwifi-firmware-%s.bin",buf);
 #endif
   uint32_t respLength=0;
-  WiFiClient *c = doWebGetStream("www.zimmers.net", 80, firmwareName, false, &respLength); 
+  WiFiClient *c = doWebGetStream("epearson.diroccovision.com", 80, firmwareName, false, &respLength); 
   if(c==null)
   {
     serial.prints(EOLN);
@@ -2997,7 +2998,7 @@ void ZCommand::showInitMessage()
   SPIFFS.info(info);
   int totalSPIFFSSize = info.totalBytes;
 #ifdef RS232_INVERTED
-  serial.prints("C64Net WiFi Firmware v");
+  serial.prints("MIB WiFi Firmware v");
 #else
   serial.prints("Zimodem Firmware v");
 #endif
@@ -3007,8 +3008,6 @@ void ZCommand::showInitMessage()
   //serial.prints(" (");
   //serial.prints(compile_date);
   //serial.prints(")");
-  serial.prints(EOLN);
-  serial.prints("Coleco ADAM WiFi");
   serial.prints(commandMode.EOLN);
   char s[100];
 #ifdef ZIMODEM_ESP32
