@@ -1211,7 +1211,7 @@ ZResult ZCommand::doUpdateFirmware(int vval, uint8_t *vbuf, int vlen, bool isNum
     return ZERROR;
 #else
   //if((!doWebGetBytes("www.zimmers.net", 80, "/otherprojs/c64net-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
-  if((!doWebGetBytes("epearson.diroccovision.com", 80, "/mibwifi/mibwifi-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
+  if((!doWebGetBytes("www.epearson.diroccovision.com", 80, "/mibwifi/mibwifi-latest-version.txt", false, buf, &bufSize))||(bufSize<=0))
     return ZERROR;
 #endif
 
@@ -1262,7 +1262,7 @@ ZResult ZCommand::doUpdateFirmware(int vval, uint8_t *vbuf, int vlen, bool isNum
   sprintf(firmwareName,"/mibwifi/mibwifi-firmware-%s.bin",buf);
 #endif
   uint32_t respLength=0;
-  WiFiClient *c = doWebGetStream("epearson.diroccovision.com", 80, firmwareName, false, &respLength); 
+  WiFiClient *c = doWebGetStream("www.epearson.diroccovision.com", 80, firmwareName, false, &respLength); 
   if(c==null)
   {
     serial.prints(EOLN);
@@ -2770,7 +2770,7 @@ ZResult ZCommand::doSerialCommand()
             int oldDelay = serialDelayMs;
             serialDelayMs = vval;
             uint8_t buf[100];
-            sprintf((char *)buf,"www.zimmers.net:80/otherprojs%s",filename);
+            sprintf((char *)buf,"www.epearson.diroccovision.com:80/mibwifi%s",filename);
             serial.prints("Control-C to Abort.");
             serial.prints(EOLN);
             result = doWebStream(0,buf,strlen((char *)buf),false,filename,true);
